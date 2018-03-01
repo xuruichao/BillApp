@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 /**
+ * Activity父类
  * Created by xrc on 18/3/1.
  */
 
