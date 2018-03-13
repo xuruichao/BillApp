@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,32 +14,27 @@ import java.util.List;
  * Created by xrc on 18/3/2.
  */
 
-public class SharkChart extends View {
+public class SharkChart extends View implements Config.OnMeasureCompleteListener {
 
     private Config mConfig;
     private DrawManager mDrawManager;
-    private List<PointData> mData = new ArrayList<>();
+    private boolean needInvalidate = false;
 
     public SharkChart(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context);
-        mData.add(new PointData("03-12", "0"));
-        mData.add(new PointData("03-13", "20"));
-        mData.add(new PointData("03-14", "10"));
-        mData.add(new PointData("03-15", "20"));
-        mData.add(new PointData("03-16", "0"));
-        mData.add(new PointData("03-17", "20"));
-        mData.add(new PointData("03-18", "0"));
     }
 
     public void setData(@NonNull List<PointData> data) {
-        this.mData = data;
+        mConfig.bindData(data);
     }
 
     private void init(Context context) {
         mConfig = new Config(context);
         mDrawManager = new DrawManager();
         mDrawManager.setStrategy(new WeekStrategy(mConfig));
+        mConfig.bindDrawManager(mDrawManager);
+        mConfig.setOnMeasureCompleteListener(this);
     }
 
     @Override
@@ -50,12 +44,25 @@ public class SharkChart extends View {
         int viewHeight = getMeasuredHeight();
         mConfig.setViewWidth(viewWidth);
         mConfig.setViewHeight(viewHeight);
-        mConfig.bindDrawManager(mDrawManager).bindData(mData).build();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mDrawManager.draw(canvas);
+    }
+
+    public void refresh() {
+        needInvalidate = true;
+        mConfig.build();
+        invalidate();
+    }
+
+    @Override
+    public void onMeasureComplete() {
+        if (needInvalidate) {
+            mConfig.build();
+            invalidate();
+        }
     }
 }

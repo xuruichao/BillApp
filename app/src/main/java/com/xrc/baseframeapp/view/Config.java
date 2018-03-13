@@ -12,6 +12,8 @@ import java.util.List;
 
 public class Config {
 
+    private OnMeasureCompleteListener listener;
+
     private DrawManager drawManager;
 
     private int viewWidth;
@@ -24,6 +26,10 @@ public class Config {
 
     private int horizontalPiece;
     private List<PointData> list;
+
+    public void setOnMeasureCompleteListener(OnMeasureCompleteListener listener) {
+        this.listener = listener;
+    }
 
     public int getPaddingLeft() {
         return paddingLeft;
@@ -43,6 +49,9 @@ public class Config {
 
     public void setViewWidth(int viewWidth) {
         this.viewWidth = viewWidth;
+        if (listener != null) {
+            listener.onMeasureComplete();
+        }
     }
 
     public void setViewHeight(int viewHeight) {
@@ -81,14 +90,12 @@ public class Config {
         return (int) (dipValue * scale + 0.5f);
     }
 
-    public Config bindDrawManager(@NonNull DrawManager drawManager) {
+    public void bindDrawManager(@NonNull DrawManager drawManager) {
         this.drawManager = drawManager;
-        return this;
     }
 
-    public Config bindData(@NonNull List<PointData> list) {
+    public void bindData(@NonNull List<PointData> list) {
         this.list = list;
-        return this;
     }
 
     public void build() {
@@ -112,5 +119,9 @@ public class Config {
             float y = Float.parseFloat(pointData.getY());
             pointData.setRealY(totalValidHeight - y / maxY * totalValidHeight + getPaddingTop());
         }
+    }
+
+    public interface OnMeasureCompleteListener {
+        void onMeasureComplete();
     }
 }
