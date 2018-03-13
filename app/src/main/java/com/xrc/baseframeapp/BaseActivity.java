@@ -20,6 +20,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         init();
     }
 
+    @SuppressWarnings("unchecked")
     private void init() {
         mPresenter = initPresenter();
         mPresenter.attachView(this);
