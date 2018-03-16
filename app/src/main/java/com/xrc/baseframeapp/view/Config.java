@@ -18,6 +18,7 @@ public class Config {
 
     private int viewWidth;
     private int viewHeight;
+    private int realWidth;
 
     private int paddingLeft;
     private int paddingRight;
@@ -56,6 +57,7 @@ public class Config {
 
     public void setViewHeight(int viewHeight) {
         this.viewHeight = viewHeight;
+        realWidth = viewWidth - paddingLeft - paddingRight;
     }
 
     public int getViewWidth() {
@@ -74,6 +76,10 @@ public class Config {
         return list;
     }
 
+    public int getRealWidth() {
+        return realWidth;
+    }
+
     public Config(Context context) {
         init(context);
     }
@@ -81,7 +87,7 @@ public class Config {
     private void init(Context context) {
         paddingLeft = dip2px(context.getApplicationContext(), 10);
         paddingRight = paddingLeft;
-        paddingTop = dip2px(context.getApplicationContext(), 15);
+        paddingTop = dip2px(context.getApplicationContext(), 100);
         paddingBottom = dip2px(context.getApplicationContext(), 25);
     }
 

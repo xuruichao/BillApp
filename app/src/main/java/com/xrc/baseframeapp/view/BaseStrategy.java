@@ -28,6 +28,11 @@ public class BaseStrategy implements Strategy {
     @Override
     public void draw(Canvas canvas) {
         drawAxis(canvas);
+        drawInfo(canvas);
+    }
+
+    private void drawInfo(Canvas canvas) {
+        
     }
 
     private void drawAxis(Canvas canvas) {
